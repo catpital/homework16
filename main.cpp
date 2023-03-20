@@ -14,8 +14,9 @@ int main()
 
 		while (chat.getCurrentUser())
 		{
-			//  _users.find(_currentUser)->second.getUserName()
-			std::cout <<GREEN<< "Добро пожаловать , " <<RESET<< _currentUser << " !" << std::endl;
+			//UserLog currentUser;
+			//currentUser = chat.getCurrentUser();
+			std::cout <<GREEN<< "Добро пожаловать , " <<RESET<< chat.getCurrentUser() << " !" << std::endl;
 			std::cout << std::endl;
 			chat.showUserMenu();
 		}

@@ -2,12 +2,15 @@
 #include <string>
 #include <iostream>
 class UserLog
-{ private:
-	const std::string _login;
+{ 
+private:
+	std::string _login;
 public:
-	UserLog(const std::string& login);
-	std::string getUserLogin() const;
-	void setUserLogin(std::string& UserLogin);
+	std::string login;
+	UserLog(std::string& login);
+	std::string getUserLogin() ;
+	void setUserLogin(std::string& login);
+	
 };
 
 class User
@@ -19,8 +22,8 @@ private:
 
 public:
 	User(std::string& username, std::string& password);
-	void setUserName(std::string& username);
+	void setUserName(std::string username);
 	std::string getUserName() const;
-	void setUserPassword(std::string& password);
+	void setUserPassword(std::string password);
 	std::string getUserPassword() const;
 };

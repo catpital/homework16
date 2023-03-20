@@ -25,14 +25,14 @@ void Chat::logIn()
 		n++;
 		k = 1;
 	}
-		//->second.getfname();
-	try
+			try
 	{
 		if (n == 0) { throw bad_sing(); }
 		else if (_users.find(login)->second.getUserPassword() == pass) 
 		{
 			std::string name = _users.find(login)->second.getUserName();
-			_currentUser = std::shared_ptr<UserLog>(login);
+			auto _currentUser = std::make_shared<UserLog>(login);
+			//std::shared_ptr<UserLog> _currentUser = login;
 		}
 		else if (_users.find(login)->second.getUserPassword() != pass)
 		{

@@ -3,6 +3,7 @@
 #include "user.h"
 #include <string>
 #include <memory>
+#include <algorithm>
 void Chat::signUp()
 {
 	try
@@ -18,6 +19,7 @@ void Chat::signUp()
 			if (_users.find(login) != _users.end())
 			{
 				throw "Такой login уже зарегистрирован!";
+			//std::cout<< "Такой login уже зарегистрирован!";
 			}
 	//	}
 		std::string name;
@@ -29,11 +31,11 @@ void Chat::signUp()
 		std::cout << "> "; //Comand PROMPT
 		std::cin >> pass; //Wait user input
 
-		//_currentUser = std::make_shared<User>(login, name, pass);
+		_currentUser2 = std::make_shared<User>(name, pass);
 		_currentUser = std::make_shared<UserLog>(login);
 		User user(name, pass);
-		_users.insert(make_pair(login, user));
-
+		UserLog userlog(login);
+		_users.insert(std::make_pair(userlog, user));
 		std::cout << GREEN <<"Пользователь успешно зарегистрирован!" <<RESET<< std::endl;
 		std::cout << std::endl;
 	}
@@ -54,8 +56,9 @@ bool Chat::isChatWork() const
 }
 void Chat::sendMessages()
 {
-	std::string _toUser="0";
-	while (_toUser == "0") {
+	std::string _toUser="";
+	while (_toUser == "")
+	{
 		std::cout << "Выберите адресата из списка: или all- для всех" << std::endl;
 		showUsernames();
 		std::string choice = "0";
@@ -79,9 +82,8 @@ void Chat::sendMessages()
 	std::string _textMessage;
 	std::cout << "> "; //Comand PROMPT
 	std::cin.ignore();
-    std::getline(std::cin, _textMessage); //Wait user input _text)
-	std::cout << std::endl;
-		
+	std::getline(std::cin, _textMessage); //Wait user input _text)
+	std::cout << std::endl;		
 	_messages.push_back(*std::make_shared<Message>(_currentUser, _toUser, _textMessage));
 
 	std::cout << GREEN << "Сообщение успешно отправлено!" << RESET << std::endl;
@@ -100,7 +102,7 @@ void Chat::showUsernames() const
 	//{
 		//std::cout << i + 1 << ". " << _users[i].getUserName() << std::endl;
 	//}
-	std::cout << "0. Общий чат" << std::endl;
+	//std::cout << "0. Общий чат" << std::endl;
 }
 void Chat::readMyMessages() const
 {
@@ -153,6 +155,7 @@ void Chat::showLogInMenu()
 	case 0:
 	{
 		_currentUser = nullptr;
+		_currentUser2 = nullptr;
 		_workStatus = false; //Change work status to "OFF"
 		return;
 		break; }
@@ -165,10 +168,14 @@ void Chat::showLogInMenu()
 	}
 	}
 }
-std::shared_ptr<UserLog> Chat::getCurrentUser() const
+std::shared_ptr<UserLog> Chat::getCurrentUser()
 {
 	return _currentUser;
 }
+//std::shared_ptr<User> Chat::getCurrentUser() const
+//{
+	//return _currentUser2;
+//}
 void Chat::showUserMenu()
 {
 	std::cout << "*** Введите желаемую команду: ***" << std::endl;
@@ -190,7 +197,7 @@ void Chat::showUserMenu()
 		std::string name;
 		std::cout << "> "; //Comand PROMPT
 		std::cin >> name; //Wait user input
-		//_currentUser->setUserName(name);
+		_currentUser2->setUserName(name);
 		break;
 	}
 	case 2:
@@ -199,7 +206,7 @@ void Chat::showUserMenu()
 		std::string password;
 		std::cout << "> "; //Comand PROMPT
 		std::cin >> password; //Wait user input
-		//_currentUser->setUserPassword(password);
+		_currentUser2->setUserPassword(password);
 		break;
 	}
 	case 3:
@@ -238,6 +245,7 @@ void Chat::showUserMenu()
 	case 0:
 	{
 		_currentUser = nullptr;
+		_currentUser2 = nullptr;
 		break;
 	}
 	default:
