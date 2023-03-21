@@ -7,8 +7,8 @@ private:
 	std::string _login;
 public:
 	std::string login;
-	UserLog(std::string& login);
-	std::string getUserLogin() ;
+	UserLog(const std::string& login);
+	std::string getUserLogin() const;
 	void setUserLogin(std::string& login);
 	
 };

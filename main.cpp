@@ -12,11 +12,11 @@ int main()
 	{
 		chat.showLogInMenu(); //Show Log In menu
 
-		while (chat.getCurrentUser())
+		while (chat.getUserLogin())
 		{
 			//UserLog currentUser;
 			//currentUser = chat.getCurrentUser();
-			std::cout <<GREEN<< "Добро пожаловать , " <<RESET<< chat.getCurrentUser() << " !" << std::endl;
+			std::cout <<GREEN<< "Добро пожаловать , " <<RESET<< chat.getUserLogin() << " !" << std::endl;
 			std::cout << std::endl;
 			chat.showUserMenu();
 		}

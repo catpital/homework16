@@ -31,13 +31,16 @@ void Chat::signUp()
 		std::cout << "> "; //Comand PROMPT
 		std::cin >> pass; //Wait user input
 
-		_currentUser2 = std::make_shared<User>(name, pass);
-		_currentUser = std::make_shared<UserLog>(login);
+		auto _currentUser2 = std::make_shared<User>(name, pass);
+		auto _currentUser = std::make_shared<UserLog>(login);
 		User user(name, pass);
-		UserLog userlog(login);
-		_users.insert(std::make_pair(userlog, user));
+		
+	    _users.insert(std::make_pair(login, user));
 		std::cout << GREEN <<"Пользователь успешно зарегистрирован!" <<RESET<< std::endl;
 		std::cout << std::endl;
+		for (auto& n : _users) {
+			std::cout << n.first << " " << n.second.getUserName() << " " << n.second.getUserPassword() << std::endl;
+		}
 	}
 	catch (const char* exception)
 	{
@@ -84,7 +87,7 @@ void Chat::sendMessages()
 	std::cin.ignore();
 	std::getline(std::cin, _textMessage); //Wait user input _text)
 	std::cout << std::endl;		
-	_messages.push_back(*std::make_shared<Message>(_currentUser, _toUser, _textMessage));
+	//_messages.push_back(*std::make_shared<Message>(_currentUser, _toUser, _textMessage));
 
 	std::cout << GREEN << "Сообщение успешно отправлено!" << RESET << std::endl;
 	std::cout << std::endl;
@@ -92,17 +95,12 @@ void Chat::sendMessages()
 void Chat::showUsernames() const
 {
 	
-	//map::const_iterator cit = _users.begin();
-	for (auto& n: _users)
+	for (const auto& n: _users)
 	{
-		std::cout << n.first.getUserLogin()<<std::endl;
+	
+		std::cout << n.first << std::endl;
 	}
 	
-	//for (int i = 0; i < _users.size(); i++)
-	//{
-		//std::cout << i + 1 << ". " << _users[i].getUserName() << std::endl;
-	//}
-	//std::cout << "0. Общий чат" << std::endl;
 }
 void Chat::readMyMessages() const
 {
@@ -110,7 +108,7 @@ void Chat::readMyMessages() const
 	for (int i = 0; i < _messages.size(); i++)
 	{
 		//if (_messages[i].getToUser() == this->_currentUser->getUserName())
-		if (_messages[i].getToUser() == _currentUser->getUserLogin())
+		if (_messages[i].getToUser() == this->_currentUser->getUserLogin())
 		{
 			std::cout << _messages[i].getFromUser() << " : " << _messages[i].getTextMessage() << std::endl;
 			count++;
@@ -168,14 +166,15 @@ void Chat::showLogInMenu()
 	}
 	}
 }
-std::shared_ptr<UserLog> Chat::getCurrentUser()
+std::shared_ptr<UserLog> Chat::getUserLogin() const
 {
 	return _currentUser;
 }
+std::shared_ptr<User> Chat::getCurrentUserName() const
 //std::shared_ptr<User> Chat::getCurrentUser() const
-//{
-	//return _currentUser2;
-//}
+{
+	return _currentUser2;
+}
 void Chat::showUserMenu()
 {
 	std::cout << "*** Введите желаемую команду: ***" << std::endl;

@@ -1,11 +1,11 @@
 #include "User.h"
-UserLog::UserLog(std::string& login) : _login(login) {}
-std::string UserLog::getUserLogin() 
+UserLog::UserLog(const std::string& login) : _login(login) {}
+std::string UserLog::getUserLogin() const
 {
 	return _login;
 }
 void UserLog::setUserLogin(std::string& login) {
-	_login = login;
+	_login =login;
 	std::cout << "Логин успешно изменено на " << _login << " !" << std::endl;
 	std::cout << std::endl;
 };
@@ -25,10 +25,7 @@ std::string User::getUserName() const
 {
 	return _username;
 }
-//std::shared_ptr<User> getCurrentUser()
-//{
-	//return _currentUser2;
-//}
+
 void User::setUserPassword(std::string password)
 {
 	_password = password;

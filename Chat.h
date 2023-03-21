@@ -15,9 +15,8 @@ class Chat
 private:
 	bool _workStatus = false; // Chat work status: "ON" - true, "OFF" - false (default is "OFF")
 	//std::vector<User> _users;
-	std::map <UserLog, User> _users;
-	//cliext::map < std::string, std::string, less <std::string>>::const_iterator iter;
-    std::shared_ptr<User> _currentUser2 =nullptr;
+	std::map <std::string, User> _users;
+	
 	void logIn();
 	void signUp();
 	std::vector<Message> _messages;
@@ -30,11 +29,11 @@ public:
 	void start(); //Change work status to "ON"
 	bool isChatWork() const; //Return current work status
 	void showLogInMenu(); //Show Log In menu
-    std::shared_ptr<UserLog> getCurrentUser();
-	//std::shared_ptr<User> getCurrentUser() const;
+    std::shared_ptr<UserLog> getUserLogin() const;
+	std::shared_ptr<User> getCurrentUserName() const;
 	void showUserMenu(); //Show User menu
 	std::shared_ptr<UserLog> _currentUser = nullptr;
-   
+	std::shared_ptr<User> _currentUser2 = nullptr;
 };
 
 class bad_sing : public std::exception
