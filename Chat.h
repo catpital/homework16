@@ -9,8 +9,13 @@
 #include <memory>
 #include <string>
 #include <map>
+//class Pthold
+//{public:
+//	virtual ~Pthold() = default; // make it virtual
+//};
 
-class Chat
+
+class Chat 
 {
 private:
 	bool _workStatus = false; // Chat work status: "ON" - true, "OFF" - false (default is "OFF")
@@ -20,7 +25,7 @@ private:
 	void logIn();
 	void signUp();
 	std::vector<Message> _messages;
-	void sendMessages();
+	void sendMessages(std::shared_ptr<UserLog> _currentUser);
 	void showUsernames() const;
 	void readMyMessages() const;
 	void readAllMessages() const;
@@ -31,7 +36,7 @@ public:
 	void showLogInMenu(); //Show Log In menu
     std::shared_ptr<UserLog> getUserLogin() const;
 	std::shared_ptr<User> getCurrentUserName() const;
-	void showUserMenu(); //Show User menu
+	void showUserMenu(std::shared_ptr<UserLog> _currentUser); //Show User menu
 	std::shared_ptr<UserLog> _currentUser = nullptr;
 	std::shared_ptr<User> _currentUser2 = nullptr;
 };

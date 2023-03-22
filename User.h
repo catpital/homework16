@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
-class UserLog
+class UserLog 
 { 
 private:
 	std::string _login;
@@ -13,7 +13,7 @@ public:
 	
 };
 
-class User
+class User 
 {
 private:
 	

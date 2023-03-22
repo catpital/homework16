@@ -1,8 +1,8 @@
 #include "Chat.h"
 #include <map>
 #include "user.h"
-#include <string>
-#include <memory>
+//#include <string>
+//#include <memory>
 #include <algorithm>
 void Chat::signUp()
 {
@@ -12,14 +12,9 @@ void Chat::signUp()
 		std::cout << "Введите login:" << std::endl;
 		std::cout << "> "; //Comand PROMPT
 		std::cin >> login; //Wait user input
-
-		//for (int i = 0; i < _users.size(); i++)
-		//{
-			//if (login == _users[i].getUserLogin())
-			if (_users.find(login) != _users.end())
+		if (_users.find(login) != _users.end())
 			{
 				throw "Такой login уже зарегистрирован!";
-			//std::cout<< "Такой login уже зарегистрирован!";
 			}
 	//	}
 		std::string name;
@@ -30,24 +25,27 @@ void Chat::signUp()
 		std::cout << "Введите пароль:" << std::endl;
 		std::cout << "> "; //Comand PROMPT
 		std::cin >> pass; //Wait user input
-
 		auto _currentUser2 = std::make_shared<User>(name, pass);
 		auto _currentUser = std::make_shared<UserLog>(login);
 		User user(name, pass);
-		
-	    _users.insert(std::make_pair(login, user));
+		_users.insert(std::make_pair(login, user));
 		std::cout << GREEN <<"Пользователь успешно зарегистрирован!" <<RESET<< std::endl;
 		std::cout << std::endl;
 		for (auto& n : _users) {
 			std::cout << n.first << " " << n.second.getUserName() << " " << n.second.getUserPassword() << std::endl;
 		}
+		std::cout << _currentUser->getUserLogin() << " " << _currentUser2->getUserName() << " " << _currentUser2->getUserPassword() << std::endl;
+		showUserMenu(_currentUser);
 	}
+	
 	catch (const char* exception)
 	{
 		std::cout << std::endl;
 		std::cout << exception << std::endl;
 		std::cout << std::endl;
 	}
+	
+	
 }
 void Chat::start()
 {
@@ -57,7 +55,7 @@ bool Chat::isChatWork() const
 {
 	return _workStatus;
 }
-void Chat::sendMessages()
+void Chat::sendMessages(std::shared_ptr<UserLog> _currentUser)
 {
 	std::string _toUser="";
 	while (_toUser == "")
@@ -74,11 +72,11 @@ void Chat::sendMessages()
 		}
 		else
 		{
-			if (_users.find(choice) != _users.end())
-			{
-				_toUser = choice;
-			}
-
+				if (_users.find(choice) != _users.end())
+				{
+					_toUser = choice;
+				}
+				else return;
 		}
 	}
 	std::cout << "Введите сообщение для адреста " << _toUser << " :" << std::endl;
@@ -86,9 +84,13 @@ void Chat::sendMessages()
 	std::cout << "> "; //Comand PROMPT
 	std::cin.ignore();
 	std::getline(std::cin, _textMessage); //Wait user input _text)
-	std::cout << std::endl;		
-	//_messages.push_back(*std::make_shared<Message>(_currentUser, _toUser, _textMessage));
+	//std::cin, _textMessage;
+	std::cout  << std::endl;
+	std::cout <<_textMessage<< std::endl;
+	std::cout << _currentUser->getUserLogin() << std::endl;
+	//std::cout << _currentUser2->getUserName() << std::endl;
 
+	_messages.push_back(*std::make_shared<Message>(_currentUser->getUserLogin(), _toUser, _textMessage));
 	std::cout << GREEN << "Сообщение успешно отправлено!" << RESET << std::endl;
 	std::cout << std::endl;
 }
@@ -128,6 +130,7 @@ void Chat::readAllMessages() const
 		}
 	}
 	if (count == 0) std::cout << RED << "Сообщений нет" << RESET << std::endl;
+
 }
 void Chat::showLogInMenu()
 {
@@ -144,10 +147,15 @@ void Chat::showLogInMenu()
 	{
 	case 1: 
 	{	logIn();
+	if (_currentUser)
+	{
+		showUserMenu(_currentUser);
+	}
 		break; }
 	case 2:
 	{
 		signUp();
+		
 		break;
 	}
 	case 0:
@@ -175,7 +183,7 @@ std::shared_ptr<User> Chat::getCurrentUserName() const
 {
 	return _currentUser2;
 }
-void Chat::showUserMenu()
+void Chat::showUserMenu(std::shared_ptr<UserLog> _currentUser)
 {
 	std::cout << "*** Введите желаемую команду: ***" << std::endl;
 	std::cout << "* Изменить имя .............. 1 *" << std::endl;
@@ -210,7 +218,8 @@ void Chat::showUserMenu()
 	}
 	case 3:
 	{
-		sendMessages();
+		sendMessages(getUserLogin());
+		showUserMenu(_currentUser);
 		break;
 	}
 	case 4:
@@ -229,12 +238,14 @@ void Chat::showUserMenu()
 		{
 			readMyMessages();
 			std::cout << std::endl;
+			showUserMenu(_currentUser);
 			break;
 		}
 		case 2:
 		{
 			readAllMessages();
 			std::cout << std::endl;
+			showUserMenu(_currentUser);
 			break;
 		}
 		default:
