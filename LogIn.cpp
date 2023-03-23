@@ -31,7 +31,7 @@ void Chat::logIn()
 		else if (_users.find(login)->second.getUserPassword() == pass) 
 		{
 			std::string name = _users.find(login)->second.getUserName();
-			auto _currentUser = std::make_shared<UserLog>(login);
+			auto _currentUser = std::make_shared<User>(login);
 			auto _currentUser2 = std::make_shared<User>(name, pass);
 		}
 		else if (_users.find(login)->second.getUserPassword() != pass)

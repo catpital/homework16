@@ -9,10 +9,6 @@
 #include <memory>
 #include <string>
 #include <map>
-//class Pthold
-//{public:
-//	virtual ~Pthold() = default; // make it virtual
-//};
 
 
 class Chat 
@@ -25,7 +21,7 @@ private:
 	void logIn();
 	void signUp();
 	std::vector<Message> _messages;
-	void sendMessages(std::shared_ptr<UserLog> _currentUser);
+	void sendMessages();
 	void showUsernames() const;
 	void readMyMessages() const;
 	void readAllMessages() const;
@@ -34,10 +30,10 @@ public:
 	void start(); //Change work status to "ON"
 	bool isChatWork() const; //Return current work status
 	void showLogInMenu(); //Show Log In menu
-    std::shared_ptr<UserLog> getUserLogin() const;
+    std::shared_ptr<User> getCurrentUserLogin() const;
 	std::shared_ptr<User> getCurrentUserName() const;
-	void showUserMenu(std::shared_ptr<UserLog> _currentUser); //Show User menu
-	std::shared_ptr<UserLog> _currentUser = nullptr;
+	void showUserMenu(); //Show User menu
+	std::shared_ptr<User> _currentUser = nullptr;
 	std::shared_ptr<User> _currentUser2 = nullptr;
 };
 

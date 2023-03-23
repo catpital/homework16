@@ -26,17 +26,16 @@ void Chat::signUp()
 		std::cout << "> "; //Comand PROMPT
 		std::cin >> pass; //Wait user input
 		auto _currentUser2 = std::make_shared<User>(name, pass);
-		auto _currentUser = std::make_shared<UserLog>(login);
-		User user(name, pass);
-		_users.insert(std::make_pair(login, user));
+		auto _currentUser = std::make_shared<User>(login);
+		
+		_users.insert(std::make_pair(login, *_currentUser2));
 		std::cout << GREEN <<"Пользователь успешно зарегистрирован!" <<RESET<< std::endl;
 		std::cout << std::endl;
 		for (auto& n : _users) {
 			std::cout << n.first << " " << n.second.getUserName() << " " << n.second.getUserPassword() << std::endl;
 		}
 		std::cout << _currentUser->getUserLogin() << " " << _currentUser2->getUserName() << " " << _currentUser2->getUserPassword() << std::endl;
-		showUserMenu(_currentUser);
-	}
+			}
 	
 	catch (const char* exception)
 	{
@@ -55,7 +54,7 @@ bool Chat::isChatWork() const
 {
 	return _workStatus;
 }
-void Chat::sendMessages(std::shared_ptr<UserLog> _currentUser)
+void Chat::sendMessages()
 {
 	std::string _toUser="";
 	while (_toUser == "")
@@ -147,10 +146,7 @@ void Chat::showLogInMenu()
 	{
 	case 1: 
 	{	logIn();
-	if (_currentUser)
-	{
-		showUserMenu(_currentUser);
-	}
+	
 		break; }
 	case 2:
 	{
@@ -174,16 +170,15 @@ void Chat::showLogInMenu()
 	}
 	}
 }
-std::shared_ptr<UserLog> Chat::getUserLogin() const
+std::shared_ptr<User> Chat::getCurrentUserLogin() const
 {
 	return _currentUser;
 }
 std::shared_ptr<User> Chat::getCurrentUserName() const
-//std::shared_ptr<User> Chat::getCurrentUser() const
 {
 	return _currentUser2;
 }
-void Chat::showUserMenu(std::shared_ptr<UserLog> _currentUser)
+void Chat::showUserMenu()
 {
 	std::cout << "*** Введите желаемую команду: ***" << std::endl;
 	std::cout << "* Изменить имя .............. 1 *" << std::endl;
@@ -218,8 +213,8 @@ void Chat::showUserMenu(std::shared_ptr<UserLog> _currentUser)
 	}
 	case 3:
 	{
-		sendMessages(getUserLogin());
-		showUserMenu(_currentUser);
+		sendMessages();
+		
 		break;
 	}
 	case 4:
@@ -238,14 +233,14 @@ void Chat::showUserMenu(std::shared_ptr<UserLog> _currentUser)
 		{
 			readMyMessages();
 			std::cout << std::endl;
-			showUserMenu(_currentUser);
+			
 			break;
 		}
 		case 2:
 		{
 			readAllMessages();
 			std::cout << std::endl;
-			showUserMenu(_currentUser);
+			
 			break;
 		}
 		default:
